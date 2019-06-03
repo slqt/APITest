@@ -9,18 +9,18 @@ def runTask():
   try:
     response = res.json()
   except:
-    print "请求任务信息失败，正在重试..."
+    print("请求任务信息失败，正在重试...")
     runTask()
     time.sleep(1)
   if response["code"] == 0:
     for task in response["content"]:
         if task["status"] not in [0,4]:
-            print "开始定时任务:taskId-",task["id"],"runTime-",task["runTime"]
+            print("开始定时任务:taskId-",task["id"],"runTime-",task["runTime"])
             subprocess.Popen('python runTiming.py %s' % task["id"], shell=True)
 
 def main():
     time.sleep(30)
-    print "开始检查定时任务"
+    print("开始检查定时任务")
     runTask()
 
 if "__main__" == __name__:

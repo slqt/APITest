@@ -24,7 +24,7 @@ def updateTaskResult(taskId,result,msg):
   url = 'http://127.0.0.1:5000/api/IAT/updateTaskResult'
   res = requests.post(url,headers = headers,data=json.dumps(data))
   response = res.json()
-  print response["msg"]
+  print(response["msg"])
 
 def read_demo(demo_path):
   tree = ET.parse(demo_path)
@@ -89,7 +89,7 @@ def configTestElement(test_domain,params=None,proxy=None):
       ET.SubElement(ConfigTestElement, 'stringProp', {"name": "HTTPSampler.proxyPort"}).text = port
       ET.SubElement(ConfigTestElement, 'stringProp', {"name": "HTTPSampler.proxyUser"}).text = userName
       ET.SubElement(ConfigTestElement, 'stringProp', {"name": "HTTPSampler.proxyPass"}).text = password
-    except Exception,e:
+    except Exception as e:
       print("proxy error",e)
   ET.SubElement(ConfigTestElement, 'stringProp', {"name": "HTTPSampler.connect_timeout"})
   ET.SubElement(ConfigTestElement, 'stringProp', {"name": "HTTPSampler.response_timeout"})
@@ -300,10 +300,10 @@ if '__main__' == __name__:
       try:
         resultContent = readResult(reulstPath+'/result.csv')
         updateTaskResult(taskId,resultContent,"upload result")
-      except Exception,e:
+      except Exception as e:
         print(e)
         setTaskStatus(taskId, 5, "task fail,please check jmeter env")
-    except Exception,e:
+    except Exception as e:
       print (e)
       setTaskStatus(taskId, 5, "build task script fail")
   else:

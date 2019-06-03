@@ -33,8 +33,8 @@ def addProject():
     db.session.commit()
     addTreeNote(data.id, 0, name, 1, user_id, 0)
     return make_response(jsonify({'code': 0, 'content': None, 'msg': u'新建成功!'}))
-  except Exception, e:
-    print e
+  except Exception as e:
+    print(e)
     return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'新建失败!'}))
 
 
@@ -156,8 +156,8 @@ def addSubFolder():
     db.session.add(data)
     db.session.commit()
     return make_response(jsonify({'code': 0, 'content': None, 'msg': u'新建成功!'}))
-  except Exception, e:
-    print e
+  except Exception as e:
+    print(e)
     return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'新建失败!'}))
 
 
@@ -176,8 +176,8 @@ def deleteFolder():
       return make_response(jsonify({'code': 0, 'content': None, 'msg': u'删除成功!'}))
     else:
       return make_response(jsonify({'code': 10001, 'content': None, 'msg': u'非空目录不可删除!'}))
-  except Exception, e:
-    print e
+  except Exception as e:
+    print(e)
     return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'删除失败!'}))
 
 
@@ -196,8 +196,8 @@ def deleteCase():
       return make_response(jsonify({'code': 0, 'content': None, 'msg': u'删除成功!'}))
     else:
       return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'删除失败!'}))
-  except Exception, e:
-    print e
+  except Exception as  e:
+    print(e)
     return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'删除失败!'}))
 
 
@@ -218,8 +218,8 @@ def copyCase():
       db.session.add(addData)
       db.session.commit()
     return make_response(jsonify({'code': 0, 'content': None, 'msg': u'复制成功!'}))
-  except Exception, e:
-    print e
+  except Exception as e:
+    print(e)
     return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'复制成功!'}))
 
 
@@ -236,8 +236,8 @@ def addCase():
     db.session.add(data)
     db.session.commit()
     return make_response(jsonify({'code': 0, 'content': {"id":data.id}, 'msg': u'新建成功!'}))
-  except Exception, e:
-    print e
+  except Exception as e:
+    print(e)
     return make_response(jsonify({'code': 10002, 'content': None, 'msg': u'新建失败!'}))
 
 
@@ -536,8 +536,8 @@ def taskDelete():
     db.session.delete(taskData)
     db.session.commit()
     return make_response(jsonify({'code': 0, 'content': None, 'msg': u'删除成功!'}))
-  except Exception, e:
-    print e
+  except Exception as  e:
+    print(e)
     return make_response(jsonify({'code': 10001, 'content': None, 'msg': u'删除失败!'}))
 
 
@@ -871,8 +871,8 @@ def debugSample():
       }
       return make_response(jsonify({'code': 0, 'content': content, 'msg': ''}))
 
-    except Exception, e:
-      print e
+    except Exception as e:
+      print(e)
       return make_response(jsonify({'code': 10001, 'content': None, 'msg': 'server error!'}))
 
 def encrypt_name(name, salt=None, encryptlop=30):
@@ -882,6 +882,7 @@ def encrypt_name(name, salt=None, encryptlop=30):
     name = hashlib.sha1(name + salt).hexdigest()  # length 64
   return name
 
+#导入接口文件
 @api.route('/uploadFile',methods=['POST'])
 def uploadFile():
   user_id = session.get('user_id')
@@ -895,12 +896,16 @@ def uploadFile():
     filePath = 'app/'+app.config['UPLOAD_FOLDER']+fileName
     projectRootId = Tree.query.filter_by(project_id=id,pid=0).first().id
     if fileType == 'har':
-      print '开始导入har'
+      print('开始导入har')
       subprocess.call('python runAutoBuild.py %s %s %s'%(user_id,projectRootId,filePath),shell=True)
       os.remove(filePath)
     if fileType == 'jmx':
-      print '开始导入jmx'
+      print('开始导入jmx')
       subprocess.call('python runAutoBuildFromJmx.py %s %s %s' % (user_id,projectRootId, filePath), shell=True)
+      os.remove(filePath)
+    if fileType == 'yaml':
+      print('开始导入yaml')
+      subprocess.call('python runAutoBuildFromYaml.py %s %s %s' % (user_id, projectRootId, filePath), shell=True)
       os.remove(filePath)
     return make_response(jsonify({'code': 0, 'content':None, 'msg': 'upload sucess'}))
   else:

@@ -1,5 +1,7 @@
 #-*-coding:utf-8-*-
 from xml.etree import ElementTree as et
+import yaml
+import json
 import sys,requests,json,time,random
 reload(sys)
 sys.setdefaultencoding("utf8")
@@ -30,38 +32,20 @@ def addSample(caseId,info):
     print("数据异常：",data)
 
 def runbuild(userId,projectId,fileName):
-  root=et.parse(fileName)
-  for each in root.getiterator("HTTPSamplerProxy"):
-    path = ''
-    method = ''
-    testname = each.attrib['testname']
-    params = []
-    paramType = 1
-    for childNode in each.getchildren():
-      if childNode.tag == 'elementProp':
-        for paramsContainerNode in childNode.getchildren():
-          for paramsNode in paramsContainerNode.getchildren():
-            key = ''
-            value = ''
-            for paramsNodeChildren in paramsNode.getchildren():
-              if paramsNodeChildren.attrib['name'] == 'Argument.name':
-                key = paramsNodeChildren.text
-              if paramsNodeChildren.attrib['name'] == 'Argument.value':
-                value = paramsNodeChildren.text
+  with open(fileName, encoding='UTF-8') as config_file:
+    configs = yaml.safe_load(config_file)
 
-            params.append({
-              "id":int(round(time.time() * 1000))+random.randint(1, 20),
-              "key":key,
-              "value":value,
-              "type": False,
-            })
-      if childNode.attrib['name'] == 'HTTPSampler.path':
-        path = childNode.text
-      if childNode.attrib['name'] == 'HTTPSampler.method':
-        method = childNode.text
-      if childNode.attrib['name'] == 'HTTPSampler.DO_MULTIPART_POST':
-        if childNode.text == 'true':
-          paramType = 3
+  for path, info in configs['paths'].items():
+    method = (list(info.keys())[0])
+    rest_api = {}
+    testname = '未知服务'
+    for k, v in list(info.values())[0].items():
+      if k == 'operationId':
+        testname=v
+      if k == 'parameters':
+        for i in v:
+          rest_api.update({i.get('name').replace('\'', '"'):''})
+
     info = {
       "asserts": {
         "assertData": [{
@@ -76,8 +60,8 @@ def runbuild(userId,projectId,fileName):
       },
       "method": method,
       "name": testname,
-      "params": params,
-      "paramType": paramType,
+      "params": rest_api,
+      "paramType": 'json',
       "path": path,
       "user_id": userId,
       "preShellType": 0,
