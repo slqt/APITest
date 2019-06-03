@@ -1,9 +1,5 @@
-# IAT
+# 基于IAT开发，原版git地址git clone https://github.com/t880216t/IAT.git
 这是一个web版的接口测试平台，旨在“简单配置、系统运行”的去做互联网接口测试。
-
-详情见：[基于 Jmeter 的 web 端接口自动化测试平台](https://testerhome.com/topics/17986)
-更多的测试技术及工具使用，欢迎进群交流：
-![](https://testerhome.com/uploads/photo/2019/80beba6b-1412-45a2-8a9d-394da51a63fb.jpg!large)
 
 ## 安装
 
@@ -30,12 +26,23 @@ $ git clone https://github.com/t880216t/IAT.git
 ```
 #### 安装前端依赖
 ```
+$ wget ... 安装nodejs 
+
+$ ln -s /opt/webtest/nodejs/node-v12.3.1-linux-x64/bin/npm /usr/local/bin/npm 
+$ npm install -g cnpm --registry=https://registry.npm.taobao.org //安装cnpm
 $ cnpm i
+$ ln -s /opt/webtest/nodejs/node-v12.3.1-linux-x64/bin/cnpm /usr/local/bin/cnpm 
 ```
 #### 打包前端
 ```
 $ npm run build
 ```
+#### 运行前端
+$ npm run start:no-mock 
+
+#### 后台数据库配置
+
+
 生成的dist文件夹便是前端部署文件
 #### 后端
 服务端代码在server文件夹中，用的python flask框架不需要打包，建议用gunicorn启动。(确保你已经在server文件夹中)
