@@ -39,15 +39,18 @@ $ ln -s /opt/webtest/nodejs/node-v12.3.1-linux-x64/bin/cnpm /usr/local/bin/cnpm
 $ npm run build
 ```
 #### 运行前端
+```
 $ npm run start:no-mock 
-
+```
 #### 后台数据库配置
- yum install mysql 
- 配置数据库略
- 把IAT/server/db_sql目录下的sql文件导入mysql，初始化数据库
- 在IAT/server/app目录中修改__init__.py文件
- 修改app.config["SQLALCHEMY_DATABASE_URI"] 起始的这一行，修改用户名密码和连接库名称，默认是root root iat
- 生成的dist文件夹便是前端部署文件
+```
+$ yum install mysql 
+```
+- 配置数据库略
+- 把IAT/server/db_sql目录下的sql文件导入mysql，初始化数据库
+- 在IAT/server/app目录中修改__init__.py文件
+- 修改app.config["SQLALCHEMY_DATABASE_URI"] 起始的这一行，修改用户名密码和连接库名称，默认是root root iat
+- 生成的dist文件夹便是前端部署文件
 #### 后端
 服务端代码在server文件夹中，用的python flask框架不需要打包，建议用gunicorn启动。(确保你已经在server文件夹中)
 ```
