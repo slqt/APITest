@@ -1,6 +1,7 @@
 ## 基于IAT开发
 - 原版git地址git clone https://github.com/t880216t/IAT.git
 - 这是一个web版的接口测试平台，旨在“简单配置、系统运行”的去做互联网接口测试。
+- 该平台支持python版本为2.7+和3.5+
 
 ## 安装
 
@@ -23,14 +24,15 @@
 这种需要有一定的运维基础和开发经验。默认已有node和python环境。
 #### 下载代码
 ```
-$ git clone https://github.com/t880216t/IAT.git
+$ git clone https://github.com/slqt/APITest.git
 ```
 #### 安装前端依赖
 ```
 $ wget ... 安装nodejs 
 
 $ ln -s /opt/webtest/nodejs/node-v12.3.1-linux-x64/bin/npm /usr/local/bin/npm 
-$ npm install -g cnpm --registry=https://registry.npm.taobao.org //安装cnpm
+$ npm install -g cnpm --registry=https://registry.npm.taobao.org 
+//安装cnpm
 $ cnpm i
 $ ln -s /opt/webtest/nodejs/node-v12.3.1-linux-x64/bin/cnpm /usr/local/bin/cnpm 
 ```
