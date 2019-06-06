@@ -3,8 +3,13 @@ from xml.etree import ElementTree as et
 import yaml
 import json
 import sys,requests,json,time,random
-import importlib
-importlib.reload(sys)
+from platform import python_version
+
+
+pv= python_version()
+if pv.split('.')[0]=='2':
+  reload(sys)
+  sys.setdefaultencoding("utf8")
 
 sys.setdefaultencoding("utf8")
 

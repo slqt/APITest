@@ -19,13 +19,13 @@ class TaskCount(db.Model):
   __tablename__ = 'task_count'
   id = db.Column(db.Integer, primary_key=True)
   task_total = db.Column(db.Integer)
-  sucess = db.Column(db.Integer)
+  success = db.Column(db.Integer)
   fail = db.Column(db.Integer)
   add_time = db.Column(db.DateTime)
 
-  def __init__(self,task_total,sucess,fail):
+  def __init__(self,task_total,success,fail):
     self.task_total = task_total
-    self.sucess = sucess
+    self.success = success
     self.add_time = datetime.now()
     self.fail = fail
 

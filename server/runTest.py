@@ -3,11 +3,12 @@ import sys,requests,os,subprocess,json
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import pandas as pd
+from platform import python_version
 
+pv= python_version()
 default_encoding = 'utf-8'
-if sys.getdefaultencoding() != default_encoding:
-  import importlib
-  importlib.reload(sys)
+if pv.split('.')[0]=='2' and sys.getdefaultencoding() != default_encoding:
+  reload(sys)
   sys.setdefaultencoding(default_encoding)
 
 #状态设置请求
@@ -297,7 +298,7 @@ if '__main__' == __name__:
       tree.write(reulstPath+'/testData.jmx')
       setTaskStatus(taskId, 2, "build task script")
       runJmeterTest(reulstPath)
-      setTaskStatus(taskId, 3, "excute script sucess")
+      setTaskStatus(taskId, 3, "excute script success")
       try:
         resultContent = readResult(reulstPath+'/result.csv')
         updateTaskResult(taskId,resultContent,"upload result")

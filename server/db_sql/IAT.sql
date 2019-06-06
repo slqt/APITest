@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS `task_count`;
 CREATE TABLE `task_count` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_total` int(11) DEFAULT NULL,
-  `sucess` int(11) DEFAULT NULL,
+  `success` int(11) DEFAULT NULL,
   `fail` int(11) DEFAULT NULL,
   `add_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -116,7 +116,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records 
+-- Records
 -- ----------------------------
 INSERT INTO `project` VALUES ('6', 'demo', '2019-01-22 03:29:01', '1', '44');
 INSERT INTO `project` VALUES ('7', 'demo1', '2019-01-23 10:06:29', '1', '50');

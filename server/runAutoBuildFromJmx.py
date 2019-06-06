@@ -1,8 +1,13 @@
 #-*-coding:utf-8-*-
 from xml.etree import ElementTree as et
 import sys,requests,json,time,random
-reload(sys)
-sys.setdefaultencoding("utf8")
+from platform import python_version
+
+
+pv= python_version()
+if pv.split('.')[0]=='2':
+  reload(sys)
+  sys.setdefaultencoding("utf8")
 
 def addCase(projectId,name):
   data = {"id":projectId,"name":name}

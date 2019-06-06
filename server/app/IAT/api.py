@@ -81,7 +81,7 @@ def setProjectStatus():
   if row_data.first():
     row_data.update(data)
     db.session.commit()
-    return make_response(jsonify({'code': 0, 'msg': 'sucess', 'content': []}))
+    return make_response(jsonify({'code': 0, 'msg': 'success', 'content': []}))
   else:
     return make_response(jsonify({'code': 10001, 'msg': 'no such Project', 'content': []}))
 
@@ -100,7 +100,7 @@ def updateTreeIndex():
   if row_data.first():
     row_data.update(data)
     db.session.commit()
-    return make_response(jsonify({'code': 0, 'msg': 'sucess', 'content': []}))
+    return make_response(jsonify({'code': 0, 'msg': 'success', 'content': []}))
   else:
     return make_response(jsonify({'code': 10001, 'msg': 'no such Project', 'content': []}))
 
@@ -126,7 +126,7 @@ def treeList():
 
   content = getChild(0)
 
-  return make_response(jsonify({'code': 0, 'msg': 'sucess', 'content': content}))
+  return make_response(jsonify({'code': 0, 'msg': 'success', 'content': content}))
 
 
 @api.route('/projectCaseList', methods=['POST'])
@@ -142,7 +142,7 @@ def projectCaseList():
         "key": case.id,
         "name": case.name,
       })
-  return make_response(jsonify({'code': 0, 'msg': 'sucess', 'content': content}))
+  return make_response(jsonify({'code': 0, 'msg': 'success', 'content': content}))
 
 
 @api.route('/addSubFolder', methods=['POST'])
@@ -456,12 +456,12 @@ def taskResult():
     daily_result = json.loads(taskData.daily_result)
   except:
     daily_result = []
-  sucess = []
+  success = []
   fail = []
   for index in range(len(results)):
     results[index]["id"] = caseIds[index]
     if results[index]["success"] == "True":
-      sucess.append(caseIds[index])
+      success.append(caseIds[index])
       results[index]["failureMessage"] = "success"
     if results[index]["success"] == "False":
       fail.append(caseIds[index])
@@ -476,10 +476,10 @@ def taskResult():
   content = {
     "testname": taskData.name,
     "testDesc": taskData.task_desc,
-    "startTime": long(startTime),
-    "endTime": long(endTime),
+    "startTime": int(startTime),
+    "endTime": int(endTime),
     "total": len(caseIds),
-    "sucess": len(sucess),
+    "success": len(success),
     "fail": len(fail),
     "result": results,
     "daily_result": daily_result,
@@ -620,7 +620,7 @@ def updateFolderName():
   if folderData.first():
     folderData.update(data)
     db.session.commit()
-    return make_response(jsonify({'code': 0, 'msg': 'sucess', 'content': []}))
+    return make_response(jsonify({'code': 0, 'msg': 'success', 'content': []}))
   else:
     return make_response(jsonify({'code': 10001, 'msg': 'fail', 'content': []}))
 
@@ -634,7 +634,7 @@ def updateTaskStatus():
   if taskData.first():
     taskData.update(data)
     db.session.commit()
-    return make_response(jsonify({'code': 0, 'msg': 'sucess', 'content': []}))
+    return make_response(jsonify({'code': 0, 'msg': 'success', 'content': []}))
   else:
     return make_response(jsonify({'code': 10001, 'msg': 'fail', 'content': []}))
 
@@ -656,13 +656,13 @@ def formatMounthResult(dayDatas):
       "day":day,
       "total":0,
       "dayTime":formatUnixDay(day),
-      "sucess":0,
+      "success":0,
       "fail":0,
     }
     for data in dayDatas:
       if data["day"] == day:
         oneDayData['total'] += data['total']
-        oneDayData['sucess'] += data['sucess']
+        oneDayData['success'] += data['success']
         oneDayData['fail'] += data['fail']
     monthResult.append(oneDayData)
   return monthResult
@@ -685,7 +685,7 @@ def getHomeData():
     dayDatas.append({
       "day":item.add_time.day,
       "total":item.task_total,
-      "sucess":item.sucess,
+      "success":item.success,
       "fail":item.fail,
     })
   mounthTask = formatMounthResult(dayDatas)
@@ -711,15 +711,15 @@ def getHomeData():
 
 def setTaskCount(result):
   failCount = 0
-  sucessCount = 0
+  successCount = 0
   jsonResult = json.loads(result)
   total = len(jsonResult)
   for item in jsonResult:
     if item["success"] == "False":
       failCount += 1
     else:
-      sucessCount += 1
-  addData = TaskCount(total, sucessCount, failCount)
+      successCount += 1
+  addData = TaskCount(total, successCount, failCount)
   db.session.add(addData)
   db.session.commit()
 
@@ -759,7 +759,7 @@ def updateTaskResult():
   if taskData.first():
     taskData.update(data)
     db.session.commit()
-    return make_response(jsonify({'code': 0, 'msg': 'update sucess', 'content': []}))
+    return make_response(jsonify({'code': 0, 'msg': 'update success', 'content': []}))
   else:
     return make_response(jsonify({'code': 10001, 'msg': 'update fail', 'content': []}))
 
@@ -795,7 +795,7 @@ def updateSample():
   if sampleData.first():
     sampleData.update(data)
     db.session.commit()
-    return make_response(jsonify({'code': 0, 'msg': u'sucess', 'content': []}))
+    return make_response(jsonify({'code': 0, 'msg': u'success', 'content': []}))
   else:
     project_id = Tree.query.filter_by(id=id).first().project_id
     addData = Sample(id, info["path"], info["method"],info["paramType"], json.dumps(info["params"]), 1,
@@ -922,6 +922,6 @@ def uploadFile():
       print('开始导入yaml')
       subprocess.call('python runAutoBuildFromYaml.py %s %s %s' % (user_id, projectRootId, filePath), shell=True)
       os.remove(filePath)
-    return make_response(jsonify({'code': 0, 'content':None, 'msg': 'upload sucess'}))
+    return make_response(jsonify({'code': 0, 'content':None, 'msg': 'upload success'}))
   else:
     return make_response(jsonify({'code': 10002, 'content':None, 'msg': 'upload fail!'}))
