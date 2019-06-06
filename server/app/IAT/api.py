@@ -5,6 +5,8 @@ from app.tables.User import users
 import os,hashlib,subprocess, json, requests, time,datetime
 from sqlalchemy import extract
 from app import db, app
+from platform import python_version
+python_version= python_version()
 
 api = Blueprint('api', __name__)
 
@@ -876,11 +878,20 @@ def debugSample():
       return make_response(jsonify({'code': 10001, 'content': None, 'msg': 'server error!'}))
 
 def encrypt_name(name, salt=None, encryptlop=30):
-  if not salt:
-    salt = os.urandom(16).encode('hex')  # length 32
-  for i in range(encryptlop):
-    name = hashlib.sha1(name + salt).hexdigest()  # length 64
-  return name
+  if python_version.split('.')[0]=='2':
+    if not salt:
+      salt = os.urandom(16).encode('hex')  # length 32
+    for i in range(encryptlop):
+      name = hashlib.sha1(name + salt).hexdigest()  # length 64
+    return name
+  else:
+    if not salt:
+      salt =os.urandom(16).hex()  # length 32
+    for i in range(encryptlop):
+      m=hashlib.sha1()
+      m.update( '{}{}'.format(name,salt).encode('utf-8'))
+      name = m.hexdigest()  # length 64
+    return name
 
 #导入接口文件
 @api.route('/uploadFile',methods=['POST'])
@@ -895,17 +906,21 @@ def uploadFile():
     upload_file.save(os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], fileName))
     filePath = 'app/'+app.config['UPLOAD_FOLDER']+fileName
     projectRootId = Tree.query.filter_by(project_id=id,pid=0).first().id
+
+    if python_version.split('.')[0] == '2':
+      filePath=filePath.decode('utf8')
+
     if fileType == 'har':
       print('开始导入har')
-      subprocess.call('python runAutoBuild.py %s %s %s'%(user_id,projectRootId,filePath.decode('utf8')),shell=True)
+      subprocess.call('python runAutoBuild.py %s %s %s'%(user_id,projectRootId,filePath),shell=True)
       os.remove(filePath)
     if fileType == 'jmx':
       print('开始导入jmx')
-      subprocess.call('python runAutoBuildFromJmx.py %s %s %s' % (user_id,projectRootId, filePath.decode('utf8')), shell=True)
+      subprocess.call('python runAutoBuildFromJmx.py %s %s %s' % (user_id,projectRootId, filePath), shell=True)
       os.remove(filePath)
     if fileType == 'yaml':
       print('开始导入yaml')
-      subprocess.call('python runAutoBuildFromYaml.py %s %s %s' % (user_id, projectRootId, filePath.decode('utf8')), shell=True)
+      subprocess.call('python runAutoBuildFromYaml.py %s %s %s' % (user_id, projectRootId, filePath), shell=True)
       os.remove(filePath)
     return make_response(jsonify({'code': 0, 'content':None, 'msg': 'upload sucess'}))
   else:
