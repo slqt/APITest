@@ -6,7 +6,8 @@ import pandas as pd
 
 default_encoding = 'utf-8'
 if sys.getdefaultencoding() != default_encoding:
-  reload(sys)
+  import importlib
+  importlib.reload(sys)
   sys.setdefaultencoding(default_encoding)
 
 #状态设置请求
@@ -16,7 +17,7 @@ def setTaskStatus(taskId,status,msg):
   url = 'http://127.0.0.1:5000/api/IAT/updateTaskStatus'
   res = requests.post(url,headers = headers,data=json.dumps(data))
   response = res.json()
-  print response["msg"]
+  print(response["msg"])
 
 def updateTaskResult(taskId,result,msg):
   data = {'id':taskId,'result':json.dumps(result)}

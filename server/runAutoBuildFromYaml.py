@@ -3,7 +3,9 @@ from xml.etree import ElementTree as et
 import yaml
 import json
 import sys,requests,json,time,random
-reload(sys)
+import importlib
+importlib.reload(sys)
+
 sys.setdefaultencoding("utf8")
 
 def addCase(projectId,name):
