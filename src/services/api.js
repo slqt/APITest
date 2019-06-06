@@ -8,6 +8,13 @@ export async function queryAddProject(params) {
   });
 }
 
+//export async function queryAddCase(params) {
+//  return request('/api/IAT/addCase', {
+//    method: 'POST',
+//    body: params,
+//  });
+//}
+
 export async function queryAddTask(params) {
   return request('/api/IAT/addTask', {
     method: 'POST',

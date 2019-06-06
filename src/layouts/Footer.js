@@ -10,19 +10,19 @@ const FooterView = () => (
         {
           key: '作者博客',
           title: '作者博客',
-          href: 'https://orion-c.top',
+          href: 'https://www.cnblogs.com/slqt/',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <Icon type="github" />,
-          href: 'https://github.com/t880216t/IAT.git',
+          href: 'https://github.com/slqt/APITest',
           blankTarget: true,
         },
       ]}
       copyright={
         <Fragment>
-          Copyright <Icon type="copyright" /> 2018 技术部老油条出品
+          Copyright <Icon type="copyright" /> 2019.6
         </Fragment>
       }
     />

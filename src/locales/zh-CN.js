@@ -68,6 +68,7 @@ export default {
   'component.noticeIcon.empty': '暂无数据',
   'menu.home': '首页',
   'menu.interface': '接口管理',
+//  'menu.case': '用例管理',
   'menu.task': '任务管理',
   'menu.task.immediate':'即时任务',
   'menu.task.immediate.add':'新建任务',
